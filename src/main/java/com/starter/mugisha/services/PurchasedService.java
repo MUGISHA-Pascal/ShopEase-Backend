@@ -1,8 +1,8 @@
 package com.starter.mugisha.services;
 
-import com.starter.mugisha.models.Customer;
 import com.starter.mugisha.models.Product;
 import com.starter.mugisha.models.Purchased;
+import com.starter.mugisha.models.User;
 import com.starter.mugisha.repository.PurchasedRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +17,9 @@ public class PurchasedService {
         this.purchasedRepo = purchasedRepo;
     }
 
-    public Purchased purchaseProduct(Customer customer, Product product, int quantity) {
+    public Purchased purchaseProduct(User user, Product product, int quantity) {
         Purchased purchased = new Purchased();
-        purchased.setCustomer(customer);
+        purchased.setUser(user);
         purchased.setProduct(product);
         purchased.setQuantity(quantity);
         purchased.setDate(LocalDate.now());

@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PurchasedDTO {
     private UUID productCode;
-    private Long customerId;
+    private UUID customerId;
     private int quantity;
     private double total;
 

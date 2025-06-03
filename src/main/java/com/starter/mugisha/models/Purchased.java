@@ -27,7 +27,7 @@ public class Purchased {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    private User user;
 
     @PrePersist
     public void calculateTotal() {

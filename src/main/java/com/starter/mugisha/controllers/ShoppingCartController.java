@@ -1,6 +1,7 @@
 package com.starter.mugisha.controllers;
 
 import com.starter.mugisha.models.*;
+import com.starter.mugisha.repository.UserRepository;
 import com.starter.mugisha.services.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,14 +11,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/cart")
 public class ShoppingCartController {
+    private UserRepository userRepository;
     private final ShoppingCartService cartService;
     private final ProductService productService;
-    private final CustomerService customerService;
 
-    public ShoppingCartController(ShoppingCartService cartService, ProductService productService, CustomerService customerService) {
+    public ShoppingCartController(ShoppingCartService cartService, ProductService productService) {
         this.cartService = cartService;
         this.productService = productService;
-        this.customerService = customerService;
     }
 
     @PostMapping("/add")
@@ -26,21 +26,21 @@ public class ShoppingCartController {
             @RequestParam UUID productCode,
             @RequestParam int quantity) {
 
-        Customer customer = customerService.getCustomerByEmail(email).orElseThrow();
+        User user = userRepository.findByEmail(email).orElseThrow();
         Product product = productService.getProductByCode(productCode);
 
-        return cartService.addToCart(customer, product, quantity);
+        return cartService.addToCart(user, product, quantity);
     }
 
     @GetMapping
     public List<ShoppingCartItem> viewCart(@RequestParam String email) {
-        Customer customer = customerService.getCustomerByEmail(email).orElseThrow();
-        return cartService.getCartItems(customer);
+        User user = userRepository.findByEmail(email).orElseThrow();
+        return cartService.getCartItems(user);
     }
 
     @PostMapping("/checkout")
     public void checkout(@RequestParam String email) {
-        Customer customer = customerService.getCustomerByEmail(email).orElseThrow();
-        cartService.checkout(customer);
+        User user = userRepository.findByEmail(email).orElseThrow();
+        cartService.checkout(user);
     }
 }

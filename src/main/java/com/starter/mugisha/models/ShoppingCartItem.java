@@ -15,7 +15,7 @@ public class ShoppingCartItem {
     private Long id;
 
     @ManyToOne
-    private Customer customer;
+    private User user;
 
     @ManyToOne
     private Product product;
