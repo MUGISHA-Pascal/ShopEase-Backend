@@ -1,5 +1,6 @@
 package com.starter.mugisha.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,10 +22,12 @@ public class Purchased {
     @CreatedDate
     private LocalDate date;
 
+    @JsonBackReference(value = "product-purchases")
     @ManyToOne
     @JoinColumn(name = "product_code", nullable = false)
     private Product product;
 
+    @JsonBackReference(value = "user-purchases")
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

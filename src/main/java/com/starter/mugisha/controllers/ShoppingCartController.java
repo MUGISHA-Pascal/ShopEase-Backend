@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RequestMapping("/api/cart")
 @Tag(name = "Shopping Cart Management", description = "APIs for managing shopping cart items")
 public class ShoppingCartController {
+    @Autowired
     private UserRepository userRepository;
     private final ShoppingCartService cartService;
     private final ProductService productService;

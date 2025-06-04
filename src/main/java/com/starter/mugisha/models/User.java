@@ -1,6 +1,7 @@
 package com.starter.mugisha.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.starter.mugisha.enums.EGender;
 import com.starter.mugisha.enums.EStatus;
 import jakarta.persistence.*;
@@ -31,9 +32,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name="status")
     private EStatus status = EStatus.ACTIVE;
+    @JsonManagedReference(value = "user-roles")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name =  "user_roles",joinColumns = @JoinColumn(name="user_id"),inverseJoinColumns = @JoinColumn(name="role_id"))
     private Set<Role> roles = new HashSet<>();
+    @JsonManagedReference(value = "user-purchases")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Purchased> purchases;
     @JsonIgnore

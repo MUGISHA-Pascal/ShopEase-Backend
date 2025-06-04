@@ -1,5 +1,6 @@
 package com.starter.mugisha.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class Quantity {
     @CreatedDate
     private LocalDate date;
 
+    @JsonBackReference(value = "product-quantities")
     @ManyToOne
     @JoinColumn(name = "product_code", nullable = false)
     private Product product;

@@ -87,8 +87,8 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/api/files/**"),
                                 new AntPathRequestMatcher("/api/users/**"),
                                 new AntPathRequestMatcher("/api/products/**"),
-                                new AntPathRequestMatcher("/api/customers/**"),
-        new AntPathRequestMatcher("/api/quantities/**")
+                                new AntPathRequestMatcher("/api/**"),
+                                   new AntPathRequestMatcher("/api/quantities/**")
                                 ,
                                 new AntPathRequestMatcher("/api/purchases/**"),
                                 new AntPathRequestMatcher("/api/cart/**")

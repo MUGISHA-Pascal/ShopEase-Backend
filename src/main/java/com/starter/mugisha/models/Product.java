@@ -1,5 +1,6 @@
 package com.starter.mugisha.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.starter.mugisha.dtos.ProductDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,8 +13,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.*;
-        import java.time.LocalDate;
+import java.time.LocalDate;
 import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,9 +33,11 @@ public class Product {
     private LocalDate inDate;
     private String image;
 
+    @JsonManagedReference(value = "product-quantities")
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Quantity> quantities;
 
+    @JsonManagedReference(value = "product-purchases")
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Purchased> purchases;
 
@@ -41,5 +45,6 @@ public class Product {
         this.name = productDto.getName();
         this.price = productDto.getPrice();
         this.productType = productDto.getProductType();
+        this.image=productDto.getImage();
     }
 }
