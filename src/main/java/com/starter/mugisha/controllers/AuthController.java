@@ -28,7 +28,7 @@ import java.time.ZonedDateTime;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
     private UserService userService;

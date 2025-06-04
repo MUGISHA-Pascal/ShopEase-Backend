@@ -31,9 +31,6 @@ public class QuantityService {
         quantityRepo.save(quantity);
         return "Quantity added successfully";
     }
-    public Quantity recordStockOperation(Quantity quantity) {
-        return quantityRepo.save(quantity);
-    }
 
     public List<Quantity> getAllQuantities() {
         return quantityRepo.findAll();

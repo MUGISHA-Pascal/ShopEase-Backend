@@ -34,7 +34,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name =  "user_roles",joinColumns = @JoinColumn(name="user_id"),inverseJoinColumns = @JoinColumn(name="role_id"))
     private Set<Role> roles = new HashSet<>();
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Purchased> purchases;
     @JsonIgnore
     private String password;

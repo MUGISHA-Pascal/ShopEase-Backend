@@ -32,15 +32,10 @@ public class ShoppingCartController {
         return cartService.addToCart(user, product, quantity);
     }
 
-    @GetMapping
+    @GetMapping("/get-all")
     public List<ShoppingCartItem> viewCart(@RequestParam String email) {
         User user = userRepository.findByEmail(email).orElseThrow();
         return cartService.getCartItems(user);
     }
 
-    @PostMapping("/checkout")
-    public void checkout(@RequestParam String email) {
-        User user = userRepository.findByEmail(email).orElseThrow();
-        cartService.checkout(user);
-    }
 }

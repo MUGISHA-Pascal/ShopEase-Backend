@@ -42,22 +42,7 @@ public class PurchaseService {
         return purchases;
     }
 
-    public PurchasedDTO purchaseByEmail(PurchaseRequestByEmailDTO dto) {
-        User customer = userRepository.findByEmail(dto.getEmail()).orElseThrow();
-        Product product = productRepo.findById(dto.getProductCode()).orElseThrow();
-
-        Purchased purchase = new Purchased();
-        purchase.setProduct(product);
-        purchase.setUser(customer);
-        purchase.setQuantity(dto.getQuantity());
-        purchase.setDate(LocalDate.now());
-        purchasedRepo.save(purchase);
-
-        PurchasedDTO response = new PurchasedDTO();
-        response.setCustomerId(customer.getId());
-        response.setProductCode(product.getCode());
-        response.setQuantity(dto.getQuantity());
-        response.setTotal(product.getPrice() * dto.getQuantity());
-        return response;
+    public List<Purchased> getAllPurchases() {
+        return purchasedRepo.findAll();
     }
 }

@@ -58,22 +58,6 @@ public class ShoppingCartService {
     /**
      * Processes the checkout: turns cart items into purchases and clears the cart.
      */
-    public void checkout(User user) {
-        List<ShoppingCartItem> cartItems = cartRepository.findAllByUser(user);
-
-        for (ShoppingCartItem item : cartItems) {
-            Purchased purchase = new Purchased();
-            purchase.setUser(user);
-            purchase.setProduct(item.getProduct());
-            purchase.setQuantity(item.getQuantity());
-            purchase.setTotal(item.getProduct().getPrice() * item.getQuantity());
-            purchase.setDate(LocalDate.now());
-
-            purchasedRepository.save(purchase);
-        }
-
-        cartRepository.deleteAll(cartItems);
-    }
     public void addItemsToCart(String email, List<CartItemDTO> items) {
         User user = userRepository.findByEmail(email).orElseThrow();
 

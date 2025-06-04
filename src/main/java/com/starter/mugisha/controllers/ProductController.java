@@ -28,12 +28,12 @@ public class ProductController {
 
 
 
-    @GetMapping
+    @GetMapping("/get-all")
     public List<Product> getAll() {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/{code}")
+    @GetMapping("/get/{code}")
     public Product getByCode(@PathVariable UUID code) {
         return productService.getProductByCode(code);
     }

@@ -17,16 +17,12 @@ public class QuantityController {
         this.quantityService = quantityService;
     }
 
-    @PostMapping
-    public Quantity record(@RequestBody Quantity quantity) {
-        return quantityService.recordStockOperation(quantity);
-    }
     @PostMapping("/add")
     public ResponseEntity<String> addQuantity(@RequestBody QuantityDTO dto) {
         return ResponseEntity.ok(quantityService.addQuantity(dto));
     }
 
-    @GetMapping
+    @GetMapping("/get-all")
     public List<Quantity> getAll() {
         return quantityService.getAllQuantities();
     }
