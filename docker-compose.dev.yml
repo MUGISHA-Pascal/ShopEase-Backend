@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database for Development
+  postgres:
+    image: postgres:16-alpine
+    container_name: shopease-postgres-dev
+    environment:
+      POSTGRES_DB: shopease_dev
+      POSTGRES_USER: shopease_user
+      POSTGRES_PASSWORD: shopease_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - shopease-dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shopease_user -d shopease_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Spring Boot Application for Development
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: shopease-backend-dev
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shopease_dev
+      SPRING_DATASOURCE_USERNAME: shopease_user
+      SPRING_DATASOURCE_PASSWORD: shopease_password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+      SPRING_JPA_SHOW_SQL: true
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
+      SERVER_PORT: 8080
+      # Enable debug logging for development
+      LOGGING_LEVEL_COM_STARTER: DEBUG
+      LOGGING_LEVEL_ORG_HIBERNATE_SQL: DEBUG
+    ports:
+      - "8080:8080"
+      - "5005:5005"  # Remote debugging port
+    volumes:
+      - ./src:/app/src
+      - ./target:/app/target
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - shopease-dev-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: shopease-pgadmin-dev
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@shopease.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - shopease-dev-network
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: shopease-redis-dev
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - shopease-dev-network
+    command: redis-server --appendonly yes
+
+volumes:
+  postgres_dev_data:
+    driver: local
+  redis_dev_data:
+    driver: local
+
+networks:
+  shopease-dev-network:
+    driver: bridge 

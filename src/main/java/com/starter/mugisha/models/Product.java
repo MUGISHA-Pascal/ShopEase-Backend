@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Product {
+public class eProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID code;
